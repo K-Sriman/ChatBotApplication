@@ -108,6 +108,54 @@
   margin: 5px 0;
   padding: 6px 10px;
   border-radius: 12px;
-  align-self: flex-end;
+  max-width:80%;
+}
+ 
+
+.userMessage {
+  background-color: #e1ffc7;
+  padding: 10px;
+  border-radius: 12px;
   max-width: 70%;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.messageWrapper {
+  display: flex;
+  align-items: flex-end;
+  margin: 8px 0;
+}
+
+.userWrapper {
+  justify-content: flex-end;
+}
+
+.botWrapper {
+  justify-content: flex-start;
+}
+
+.profileImage {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin: 0 8px;
+}
+
+.userMessage {
+  background-color: #e1ffc7;
+  padding: 10px;
+  border-radius: 12px;
+  max-width: 70%;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.botMessage {
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 12px;
+  max-width: 70%;
+  font-size: 14px;
+  line-height: 1.4;
 }

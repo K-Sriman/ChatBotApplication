@@ -57,9 +57,7 @@ export default class ChatBotAppApplicationCustomizer extends BaseApplicationCust
     chatBox.innerHTML = `
       <div class="${styles.chatBox}">
         <div class="${styles.chatHeader}">ChatBot</div>
-        <div class="${styles.chatBody}" id="chat-body">
-          <p>Hello ${this.context.pageContext.user.displayName}! How can I help you?</p>
-        </div>
+        <div class="${styles.chatBody}" id="chat-body"></div>
         <div class="${styles.inputContainer}">
           <input class="${styles.inputField}" id="chat-input" placeholder="Start typing here!" />
           <button class="${styles.sendButton}" id="send-button">Send</button>
@@ -69,6 +67,11 @@ export default class ChatBotAppApplicationCustomizer extends BaseApplicationCust
     document.body.appendChild(chatBox);
     this.addCloseButton(chatBox);
   
+    const chatBody = document.getElementById('chat-body');
+    if (chatBody) {
+      this.sendBotReply(chatBody, `Hello ${this.context.pageContext.user.displayName}! How can I help you?`);
+    }
+  
     const sendButton = chatBox.querySelector('#send-button') as HTMLButtonElement;
     const inputField = chatBox.querySelector('#chat-input') as HTMLInputElement;
   
@@ -77,7 +80,7 @@ export default class ChatBotAppApplicationCustomizer extends BaseApplicationCust
         this.sendMessage(inputField.value);
         inputField.value = '';
       });
-   
+  
       inputField.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
           this.sendMessage(inputField.value);
@@ -87,18 +90,51 @@ export default class ChatBotAppApplicationCustomizer extends BaseApplicationCust
     }
   }
   
+  
+  
   private sendMessage(message: string): void {
     if (!message.trim()) return;
   
     const chatBody = document.getElementById('chat-body');
     if (chatBody) {
-      const msgElement = document.createElement('div');
-      msgElement.className = styles.userMessage;
-      msgElement.textContent = message;
-      chatBody.appendChild(msgElement);
-   
+      const msgWrapper = document.createElement('div');
+      msgWrapper.className = `${styles.messageWrapper} ${styles.userWrapper}`;
+  
+      const msgText = document.createElement('div');
+      msgText.className = styles.userMessage;
+      msgText.textContent = message;
+  
+      const profileImg = document.createElement('img');
+      profileImg.src = `/_layouts/15/userphoto.aspx?size=S&accountname=${this.context.pageContext.user.loginName}`;
+      profileImg.className = styles.profileImage;
+  
+      msgWrapper.appendChild(msgText);     
+      msgWrapper.appendChild(profileImg);  
+      chatBody.appendChild(msgWrapper);
+  
+      this.sendBotReply(chatBody, "Thanks for your message! I'll get back to you shortly.");
+  
       chatBody.scrollTop = chatBody.scrollHeight;
     }
+  }
+  
+
+  
+  private sendBotReply(chatBody: HTMLElement, msg: string): void {
+    const msgWrapper = document.createElement('div');
+    msgWrapper.className = `${styles.messageWrapper} ${styles.botWrapper}`;
+  
+    const profileImg = document.createElement('img'); 
+    profileImg.src = 'https://media.istockphoto.com/id/1448313693/vector/robot-in-circle-vector-icon.jpg?s=1024x1024&w=is&k=20&c=yNGvIyhW_WOX4cDROqntNqwLdv_fYCtHc60VSbRWUx4='; 
+    profileImg.className = styles.profileImage;
+  
+    const msgText = document.createElement('div');
+    msgText.className = styles.botMessage; 
+    msgText.textContent = msg;
+  
+    msgWrapper.appendChild(profileImg);
+    msgWrapper.appendChild(msgText);
+    chatBody.appendChild(msgWrapper);
   }
   
   
