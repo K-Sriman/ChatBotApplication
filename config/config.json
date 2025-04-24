@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "chat-bot-app-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/chatBotApp/ChatBotAppApplicationCustomizer.js",
+          "manifest": "./src/extensions/chatBotApp/ChatBotAppApplicationCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ChatBotAppApplicationCustomizerStrings": "lib/extensions/chatBotApp/loc/{locale}.js"
+  }
+}
