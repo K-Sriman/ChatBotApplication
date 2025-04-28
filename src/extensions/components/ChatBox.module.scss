@@ -72,6 +72,12 @@
 .close:hover {
   transform: rotate(90deg);
 }
+.NoInputWarn{
+  color: rgba(246, 51, 51, 0.904);
+  font-size: x-small;
+  align-self: center;
+  background: #f7f9fc;
+}
 
 .chatsContainer {
   flex: 1;
@@ -107,7 +113,7 @@
 
 .bubble {
   max-width: 200px;
-  padding: 3px 4px;
+  padding: 4px 8px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

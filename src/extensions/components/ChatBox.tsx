@@ -18,10 +18,10 @@ interface State {
   isChatActive: boolean;
   inputText: string;
   messages: IMessage[];
+  NoInputWarning: boolean;
 }
 
-class ChatBox extends React.Component<IChatBoxProps, State> {
-  private storageKey = 'spfx-chat-messages';
+class ChatBox extends React.Component<IChatBoxProps, State> { 
  userImage = `/_layouts/15/userphoto.aspx?size=S&accountname=${this.props.user.loginName}`;
   constructor(props: IChatBoxProps) {
     super(props);
@@ -29,20 +29,8 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
       isChatActive: false,
       inputText: '',
       messages: [],
+      NoInputWarning:false
     };
-  }
-  componentDidMount() {
-    const persisted = localStorage.getItem(this.storageKey);
-    if (persisted) {
-      this.setState({ messages: JSON.parse(persisted) });
-    }
-    
-  }
-
-  componentDidUpdate(_: IChatBoxProps, prevState: State) {
-    if (prevState.messages !== this.state.messages) {
-      localStorage.setItem(this.storageKey, JSON.stringify(this.state.messages));
-    }
   }
 
   handleChatToggle = () => {
@@ -57,7 +45,7 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
   };
 
   handleClose = () => {
-    this.setState({ isChatActive: false });
+    this.setState({ isChatActive: false, NoInputWarning:false });
   };
 
   handleMsgSend = () => {
@@ -67,10 +55,15 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
       this.setState({ inputText: '' });
       setTimeout(() => this.addBotMessage('I am here to assist you.'), 500);
     }
+    else{
+       this.setState({
+        NoInputWarning:true
+        })
+      }
   };
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ inputText: e.target.value });
+    this.setState({ inputText: e.target.value, NoInputWarning:false });
   };
 
   private addMessage(sender: 'user' | 'bot', content: string) {
@@ -82,8 +75,7 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
     this.addMessage('bot', msg);
   }
 
-  render() {
-    // const { user } = this.props;
+  render() { 
     return (
       <>
         <div className={styles.chatButton} onClick={this.handleChatToggle}>
@@ -119,7 +111,7 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
                 </div>
               ))}
             </div>
-
+                {this.state.NoInputWarning && <p className={styles.NoInputWarn}>please enter something !</p>}
             <div className={styles.inputRow}>
               <input
                 type="text"
