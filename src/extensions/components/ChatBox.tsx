@@ -4,7 +4,7 @@ import styles from './ChatBox.module.scss';
 
 interface IChatBoxProps {
   user: {
-    loginName: any; displayName: string;  
+    loginName: string; displayName: string;  
 };
 }
 
@@ -33,7 +33,7 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
     };
   }
 
-  handleChatToggle = () => {
+  handleChatToggle = (): void => {
     this.setState(
       prev => ({ isChatActive: !prev.isChatActive }),
       () => {
@@ -44,11 +44,11 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
     );
   };
 
-  handleClose = () => {
+  handleClose = () : void=> {
     this.setState({ isChatActive: false, NoInputWarning:false });
   };
 
-  handleMsgSend = () => {
+  handleMsgSend = () : void=> {
     const text = this.state.inputText.trim();
     if (text) {
       this.addMessage('user', text);
@@ -62,20 +62,20 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
       }
   };
 
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
     this.setState({ inputText: e.target.value, NoInputWarning:false });
   };
 
-  private addMessage(sender: 'user' | 'bot', content: string) {
+  private addMessage(sender: 'user' | 'bot', content: string):void {
     const timestamp = new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
     this.setState(prev => ({ messages: [...prev.messages, { sender, content, timestamp }] }));
   }
 
-  private addBotMessage(msg: string) {
+  private addBotMessage(msg: string):void {
     this.addMessage('bot', msg);
   }
 
-  render() { 
+  render() : any { 
     return (
       <>
         <div className={styles.chatButton} onClick={this.handleChatToggle}>
@@ -85,7 +85,7 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
           <div className={styles.chatBox}>
             <div className={styles.header}>
               <div className={styles.title}>Your SharePoint Assistant</div>
-              <button className={styles.close} onClick={this.handleClose}>×</button>
+              <button className={styles.close} onClick={this.handleClose}>X</button>
             </div>
 
             <div className={styles.chatsContainer}>
@@ -127,6 +127,7 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
       </>
     );
   }
+
 }
 
 export default ChatBox;
