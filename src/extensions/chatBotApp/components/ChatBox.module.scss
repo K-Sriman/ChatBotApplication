@@ -1,24 +1,28 @@
+/* Chat Button */
 .chatButton {
   position: fixed;
   bottom: 24px;
   right: 24px;
   background: linear-gradient(135deg, #0078d4, #005a9e);
   color: #fff;
-  padding: 14px 20px;
+  padding: 14px 17px;
+  // border-radius: 50%;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  transition: background 0.3s, transform 0.3s;
+  box-shadow: 0 6px 12px rgba(79, 78, 78, 0.571);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s ease-in-out;
   z-index: 1000;
 }
 
 .chatButton:hover {
   background: linear-gradient(135deg, #005a9e, #003f6d);
   transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Chat Box */
 .chatBox {
   position: fixed;
   bottom: 90px;
@@ -33,19 +37,24 @@
   overflow: hidden;
   animation: fadeIn 0.4s ease-in-out;
   z-index: 1000;
+  scrollbar-width: thin;
+  scrollbar-color: #a8a8a8 transparent;
+  scroll-behavior: smooth;
+  transition: width 0.4s ease, height 0.4s ease, border-radius 0.4s ease;
+
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.chatBox.fullScreen {
+  width: 70%;
+  height: 81vh;  
 }
 
+.chatBox.minimized {
+  width: 340px;
+  height: 480px;
+}
+
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -53,32 +62,46 @@
   padding: 12px 16px;
   background-color: #0078d4;
   color: white;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .title {
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1rem;
 }
 
-.close {
+.close, .maximizeBtn {
   background: transparent;
   border: none;
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  height: 15px;
+  width: 15px;
+  margin: 8px;
+  transition: transform 0.3s ease;
 }
 
-.close:hover {
-  transform: rotate(90deg);
+.close:hover, .maximizeBtn:hover {
+  // transform: rotate(180deg);
+  transform: scale(1.2) translateY(-2px); /* Pop-up effect */
+  opacity: 0.9;
 }
-.NoInputWarn{
+
+/* No Input Warning */
+.NoInputWarn {
   color: rgba(246, 51, 51, 0.904);
   font-size: x-small;
   align-self: center;
   background: #f7f9fc;
+  padding: 4px 8px;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 60px;
 }
 
+/* Chats Container */
 .chatsContainer {
   flex: 1;
   padding: 16px;
@@ -89,10 +112,15 @@
   gap: 12px;
 }
 
+/* Chat Messages */
 .chatMessage {
   display: flex;
   align-items: flex-end;
   gap: 10px;
+}
+
+.botMessage, .userMessage {
+  display: flex;
 }
 
 .botMessage {
@@ -104,6 +132,7 @@
   flex-direction: row-reverse;
 }
 
+/* Profile Pic */
 .profilePic img {
   width: 36px;
   height: 36px;
@@ -111,18 +140,22 @@
   object-fit: cover;
 }
 
+/* Chat Bubbles */
 .bubble {
-  max-width: 200px;
-  padding: 4px 8px;
-  border-radius: 8px;
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   font-size: 0.95rem;
   word-wrap: break-word;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
-.bubble p{
+
+.bubble p {
   margin: 0;
 }
+
 .botMessage .bubble {
   background: #e1ecf4;
   color: #333;
@@ -135,18 +168,21 @@
   text-align: right;
 }
 
+/* Timestamp */
 .timestamp {
-  font-size: 0.5rem;
+  font-size: 0.6rem;
   margin-top: 4px;
   opacity: 0.6;
   align-self: flex-end;
 }
 
+/* Input Row */
 .inputRow {
   display: flex;
   padding: 12px 16px;
   border-top: 1px solid #ddd;
   background: #fff;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .inputRow input {
@@ -172,9 +208,52 @@
   border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s ease;
 }
 
 .inputRow button:hover {
   background: #005a9e;
+  transform: translateY(-2px);
 }
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .chatBox {
+    width: 90%;
+    height: 450px;
+    bottom: 60px;
+  }
+
+  .chatButton {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .inputRow input {
+    font-size: 0.85rem;
+  }
+
+  .inputRow button {
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+
+  .chatBox.fullScreen {
+    width: 90%;
+    height: 80vh;
+  }
+}
+ 
+

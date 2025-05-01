@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom'; 
-import ChatBox from '../components/ChatBox';
+import ChatBox from './components/ChatBox';
 // import { Dialog } from '@microsoft/sp-dialog'; 
 import { BaseApplicationCustomizer, PlaceholderContent, PlaceholderName } from '@microsoft/sp-application-base';
 import { Log } from '@microsoft/sp-core-library';
@@ -9,6 +9,12 @@ import { Log } from '@microsoft/sp-core-library';
 export interface IChatBotAppApplicationCustomizerProperties {
   testMessage: string;
   Bottom: string;
+}
+export interface IChatBoxProps {
+  user: {
+    loginName: string;
+    displayName: string;
+  };
 }
 
 const LOG_SOURCE: string = 'SPFx.ChatBot';
@@ -31,7 +37,7 @@ export default class ChatBotAppApplicationCustomizer extends BaseApplicationCust
     }
   
     if (this._bottomPlaceholder && this._bottomPlaceholder.domElement) {
-      const element: React.ReactElement<any> = React.createElement(ChatBox, {
+      const element: React.ReactElement<IChatBoxProps> = React.createElement(ChatBox, {
         user: this.context.pageContext.user,
       }); 
       ReactDOM.render(element, this._bottomPlaceholder.domElement);
@@ -41,9 +47,10 @@ export default class ChatBotAppApplicationCustomizer extends BaseApplicationCust
     }
   }
   public onDispose(): void {
-    if(this._bottomPlaceholder){
+    if(this._bottomPlaceholder){ 
       console.log("displosed the compoent !");
     }
+ 
   }  
 }
 
