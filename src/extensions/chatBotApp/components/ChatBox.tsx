@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from "./ChatBox.module.scss";
 import * as strings from "ChatBotAppApplicationCustomizerStrings";
-import * as key from '../../locked'; 
+import key from '../../locked'; 
 interface IChatBoxProps {
   user: {
     loginName: string;
@@ -111,32 +111,40 @@ class ChatBox extends React.Component<IChatBoxProps, State> {
     }));
   
     try {
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key.default}`;
-      console.log(key.default);
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text }] }] }),
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${key.openrouter}`, 
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://x2k47.sharepoint.com", 
+          "X-Title": "SPFx Chatbot", 
+        },
+        body: JSON.stringify({
+          model: "qwen/qwen3-0.6b-04-28:free", 
+          messages: [
+            {
+              role: "user",
+              content: text,
+            },
+          ],
+        }),
       });
   
       const data = await response.json();
-      const parts = data?.candidates?.[0]?.content?.parts;
-  
-      const finalText = parts?.[0]?.text || strings.msg.NotUnderstood;
-      // const formatted = this.parseBold(finalText);
+      const finalText = data?.choices?.[0]?.message?.content || strings.msg.NotUnderstood;
   
       this.setState((prev) => {
         const updated = [...prev.messages];
-        updated.pop();
-        updated.push({ sender: 'bot', content: finalText, timestamp });
+        updated.pop(); 
+        updated.push({ sender: "bot", content: finalText, timestamp });
         return { messages: updated };
       });
     } catch (error) {
-      console.error('API error:', error);
+      console.error("API error:", error);
       this.setState((prev) => {
         const updated = [...prev.messages];
         updated.pop();
-        updated.push({ sender: 'bot', content: strings.msg.WentWrong, timestamp });
+        updated.push({ sender: "bot", content: strings.msg.WentWrong, timestamp });
         return { messages: updated };
       });
     }
